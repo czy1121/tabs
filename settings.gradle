@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url uri(cosmoRepoPath) }
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "tabs"
+include ':app'
+
+include ':tabs'
