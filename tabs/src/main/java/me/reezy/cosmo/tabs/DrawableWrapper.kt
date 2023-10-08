@@ -5,6 +5,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.DrawableCompat
 
+@Suppress("DEPRECATION")
 class DrawableWrapper(drawable: Drawable) : Drawable(), Drawable.Callback {
 
     var wrappedDrawable: Drawable = drawable
@@ -20,7 +21,11 @@ class DrawableWrapper(drawable: Drawable) : Drawable(), Drawable.Callback {
 
 
     override fun draw(canvas: Canvas) {
-        wrappedDrawable.draw(canvas)
+        try {
+            wrappedDrawable.draw(canvas)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
     }
 
     override fun onBoundsChange(bounds: Rect) {
@@ -35,6 +40,7 @@ class DrawableWrapper(drawable: Drawable) : Drawable(), Drawable.Callback {
         return wrappedDrawable.changingConfigurations
     }
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun setDither(dither: Boolean) {
         wrappedDrawable.setDither(dither)
     }
@@ -75,7 +81,7 @@ class DrawableWrapper(drawable: Drawable) : Drawable(), Drawable.Callback {
         return super.setVisible(visible, restart) || wrappedDrawable.setVisible(visible, restart)
     }
 
-    @Deprecated("Deprecated in Java", ReplaceWith("wrappedDrawable.opacity"))
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun getOpacity(): Int {
         return wrappedDrawable.opacity
     }

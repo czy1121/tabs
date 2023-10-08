@@ -8,6 +8,6 @@ import me.reezy.cosmo.tabs.ImageLoader
 
 class CoilImageLoader : ImageLoader {
     override fun load(context: Context, url: String?, onSuccess: (drawable: Drawable) -> Unit) {
-        Coil.imageLoader(context).enqueue(ImageRequest.Builder(context).data(url).target(onSuccess = onSuccess).build())
+        Coil.imageLoader(context).enqueue(ImageRequest.Builder(context).data(url).allowHardware(false).target(onSuccess = onSuccess).build())
     }
 }

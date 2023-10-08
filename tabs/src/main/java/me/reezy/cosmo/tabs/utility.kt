@@ -4,7 +4,9 @@ package me.reezy.cosmo.tabs
 
 import android.widget.TextView
 import androidx.core.view.forEach
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 
 val TabLayout.Tab.textView: TextView?
@@ -33,21 +35,34 @@ inline fun TabLayout.select(name: String): TabLayout.Tab? {
     return get(name)?.apply { select() }
 }
 
-fun TabLayout.setup(tabs: List<TabItem>, each: TabItemView.() -> Unit = {}) {
+fun TabLayout.setup(tabs: List<TabItem>, each: (TabItemView.() -> Unit)? = null) {
     removeAllTabs()
     for (item in tabs) {
-        addTab(newTab().setTag(item).setCustomView(TabItemView(context).setup(item).apply(each)).setText(item.text))
+        val view = TabItemView(context).setup(item)
+        view.textView?.setTextColor(tabTextColors)
+        each?.invoke(view)
+        addTab(newTab().setTag(item).setCustomView(view).setText(item.text))
     }
+}
+
+fun TabLayout.setup(tabs: List<TabItem>, pager: ViewPager2, each: (TabItemView.() -> Unit)? = null) {
+    TabLayoutMediator(this, pager) { tab, position ->
+        val item = tabs[position]
+        val view = TabItemView(context).setup(item)
+        view.textView?.setTextColor(tabTextColors)
+        each?.invoke(view)
+
+        tab.tag = item
+        tab.text = item.text
+        tab.customView = view
+    }.attach()
 }
 
 fun TabLayout.each(block: (TabLayout.Tab) -> Unit) {
     (0 until tabCount).forEach {
-         getTabAt(it)?.let(block)
+        getTabAt(it)?.let(block)
     }
 }
-
-
-
 
 
 //private val TabLayout.tabTextSize: Float

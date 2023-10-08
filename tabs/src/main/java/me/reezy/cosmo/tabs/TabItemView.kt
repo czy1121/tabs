@@ -16,7 +16,6 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.doOnNextLayout
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
-import me.reezy.cosmo.tabs.CoilImageLoader
 
 @Suppress("NOTHING_TO_INLINE")
 class TabItemView(context: Context) : LinearLayoutCompat(context) {
@@ -24,6 +23,7 @@ class TabItemView(context: Context) : LinearLayoutCompat(context) {
         var imageLoader: ImageLoader = CoilImageLoader()
     }
 
+    var name: String = ""
 
     var iconView: ImageView? = null
         private set
@@ -64,6 +64,7 @@ class TabItemView(context: Context) : LinearLayoutCompat(context) {
     }
 
     fun setup(item: TabItem): TabItemView {
+        name = item.name
         if (!item.iconNormal.isNullOrEmpty()) {
             val view = iconView ?: AppCompatImageView(context).apply {
                 id = android.R.id.icon1

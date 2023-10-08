@@ -2,11 +2,10 @@ package me.reezy.cosmo.tabs
 
 import androidx.annotation.Keep
 
-@Keep
 class TabItem(
-    val name: String,
-    val text: String? = null,
-    val iconNormal: String? = null,
-    val iconActive: String? = null,
-    val iconSize: Int? = null,
+    @Keep val name: String,
+    @Keep val text: String? = null,
+    @Keep val iconNormal: String? = null,
+    @Keep val iconActive: String? = null,
+    @Keep val iconSize: Int? = null,
 )

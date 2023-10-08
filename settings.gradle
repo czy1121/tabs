@@ -5,15 +5,21 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        maven { url uri(cosmoRepoPath) }
+        maven { url cosmoRepoPath }
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        libs {
+            from files("$buildGradlePath/versions-basic.toml")
+        }
+    }
 }
 rootProject.name = "tabs"
-include ':app'
 
 include ':tabs'
