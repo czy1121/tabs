@@ -4,11 +4,12 @@ apply from: "$buildGradlePath/build-library-android.gradle"
 
 dependencies {
 
-    api 'androidx.appcompat:appcompat:1.6.1'
-    api 'androidx.viewpager2:viewpager2:1.0.0'
-    api 'com.google.android.material:material:1.9.0'
+    api libs.androidx.appcompat
+    api libs.androidx.viewpager2
+    api libs.androidx.recyclerview
+    api libs.material
 
     // 图像加载
-    compileOnly "io.coil-kt:coil:2.2.2"
+    compileOnly libs.coil.kt
 
 }
