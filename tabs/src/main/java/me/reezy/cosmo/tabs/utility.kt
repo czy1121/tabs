@@ -73,7 +73,7 @@ fun TabLayout.setup(tabs: List<TabItem>, pager: ViewPager2, each: (TabItemView.(
     }.attach()
 }
 
-fun TabLayout.forEach(block: (TabLayout.Tab) -> Unit) {
+fun TabLayout.each(block: (TabLayout.Tab) -> Unit) {
     (0 until tabCount).forEach {
         getTabAt(it)?.let(block)
     }
