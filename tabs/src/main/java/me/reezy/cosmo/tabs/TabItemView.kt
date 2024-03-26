@@ -65,7 +65,7 @@ class TabItemView(context: Context) : LinearLayoutCompat(context) {
 
     fun setup(item: TabItem): TabItemView {
         name = item.name
-        if (!item.iconNormal.isNullOrEmpty()) {
+        if (item.hasIcon) {
             val view = iconView ?: AppCompatImageView(context).apply {
                 id = android.R.id.icon1
                 adjustViewBounds = true
@@ -74,10 +74,15 @@ class TabItemView(context: Context) : LinearLayoutCompat(context) {
                 iconView = this
             }
             val width = ((item.iconSize ?: 0) * resources.displayMetrics.density).toInt()
-            val height = ((item.iconSize ?: 24) * resources.displayMetrics.density).toInt()
-            view.setImageDrawable(context.createIcon(item.iconNormal, item.iconActive, width, height) {
-                view.requestLayout()
-            })
+            val height = ((item.iconSize ?: 0) * resources.displayMetrics.density).toInt()
+
+            if (!item.iconNormal.isNullOrEmpty()) {
+                view.setImageDrawable(context.createIcon(item.iconNormal, item.iconActive, width, height) {
+                    view.requestLayout()
+                })
+            } else {
+                view.setImageResource(item.iconResId)
+            }
             view.visibility = View.VISIBLE
         } else {
             iconView?.visibility = View.GONE
@@ -110,7 +115,7 @@ class TabItemView(context: Context) : LinearLayoutCompat(context) {
 
 
     private fun Context.createDrawable(url: String?, width: Int, height: Int, onLoaded: () -> Unit): Drawable {
- 
+
         val wrapper = DrawableWrapper(ColorDrawable())
         imageLoader.load(applicationContext, url) {
             wrapper.wrappedDrawable = it
@@ -118,8 +123,10 @@ class TabItemView(context: Context) : LinearLayoutCompat(context) {
                 wrapper.setBounds(0, 0, width, height)
             } else if (width > 0) {
                 wrapper.setBounds(0, 0, width, (width * it.intrinsicHeight / it.intrinsicWidth.toFloat()).toInt())
-            } else {
+            } else if (height > 0) {
                 wrapper.setBounds(0, 0, (height * it.intrinsicWidth / it.intrinsicHeight.toFloat()).toInt(), height)
+            } else {
+                wrapper.setBounds(0, 0, it.intrinsicWidth, it.intrinsicHeight)
             }
             wrapper.invalidateSelf()
             onLoaded()
