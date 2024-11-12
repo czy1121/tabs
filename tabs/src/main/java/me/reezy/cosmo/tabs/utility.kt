@@ -33,7 +33,7 @@ fun TabLayout.get(name: String): TabLayout.Tab? {
     if (name.isEmpty()) return null
     (0 until tabCount).forEach { i ->
         getTabAt(i)?.let {
-            if (it.tag == name) {
+            if (it.tag?.equals(name) == true) {
                 return it
             }
         }
@@ -54,9 +54,11 @@ fun TabLayout.setup(tabs: List<TabItem>, each: (TabItemView.() -> Unit)? = null)
     removeAllTabs()
     for (item in tabs) {
         val view = TabItemView(context).setup(item)
+
+        addTab(newTab().setTag(item).setCustomView(view).setText(item.text))
+
         view.textView?.setTextColor(tabTextColors)
         each?.invoke(view)
-        addTab(newTab().setTag(item).setCustomView(view).setText(item.text))
     }
 }
 
@@ -64,12 +66,13 @@ fun TabLayout.setup(tabs: List<TabItem>, pager: ViewPager2, each: (TabItemView.(
     TabLayoutMediator(this, pager) { tab, position ->
         val item = tabs[position]
         val view = TabItemView(context).setup(item)
-        view.textView?.setTextColor(tabTextColors)
-        each?.invoke(view)
 
         tab.tag = item
         tab.text = item.text
         tab.customView = view
+
+        view.textView?.setTextColor(tabTextColors)
+        each?.invoke(view)
     }.attach()
 }
 
